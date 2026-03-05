@@ -9,8 +9,6 @@
 <br><br>
 
 # 1. 이미지 컬러/흑백 나란히 출력하기 (1.1.1.py) 
-<br>
-
 [실습 목표]<br>
 하나의 이미지를 컬러와 흑백 두 가지 버전으로 불러온 뒤, 화면 비율을 유지하면서 크기를 조절하고 <br>두 이미지를 가로로 나란히 이어 붙여 한 화면에 출력하는 실습입니다.
 
@@ -61,15 +59,13 @@ cv2.destroyAllWindows()```
 </div>
 </details>
 
-실행 결과 화면
-
+[실행 결과 화면]
 <div align="center">
 <img width="1493" height="535" alt="실행 결과 1" src="https://github.com/user-attachments/assets/68c8514b-fc8d-486a-b531-e70310b59743" />
 </div>
 <br><br>
 
 # 2. 마우스 이벤트로 그림 그리기 (1.1.2.py)
-
 [실습 목표]<br>
 불러온 이미지 위에 마우스 클릭과 드래그를 이용하여 그림을 그리는 미니 그림판 프로그램입니다. 좌클릭은 파란색, 우클릭은 빨간색으로 그려지며, 키보드 +와 - 키를 이용해 붓의 크기를 조절할 수 있습니다.
 
@@ -163,8 +159,7 @@ cv.destroyAllWindows()```
 </div>
 </details>
 
-실행 결과 화면
-
+[실행 결과 화면]
 <div align="center">
 <img width="2148" height="1354" alt="실행 결과 2-1" src="https://github.com/user-attachments/assets/75ead328-b07a-46a4-840c-09975337aff9" />
 <img width="1725" height="914" alt="실행 결과 2-2" src="https://github.com/user-attachments/assets/ad539da6-dbf3-43ff-ad36-d93e3c086700" />
@@ -172,7 +167,6 @@ cv.destroyAllWindows()```
 <br><br>
 
 # 3. 마우스 드래그로 영역(ROI) 선택 및 저장하기 (1.1.3.py)
-
 [실습 목표]<br>
 이미지 위에서 마우스를 드래그하여 원하는 영역(ROI: Region of Interest)을 사각형으로 선택하고, 해당 부분을 잘라내어 별도의 창에 띄우는 프로그램입니다. 키보드를 조작하여 선택 영역을 초기화하거나 이미지 파일로 저장할 수 있습니다.
 
@@ -251,8 +245,7 @@ cv.destroyAllWindows() # 프로그램 종료 전, 열려있던 모든 OpenCV 창
 </div>
 </details>
 
-실행 결과 화면
-
+[실행 결과 화면]
 <div align="center">
 <img width="2149" height="1240" alt="image" src="https://github.com/user-attachments/assets/e5c225fe-c24c-4e26-a9de-5897d9d1de5d" />
 </div>
