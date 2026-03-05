@@ -1,20 +1,21 @@
 <div align="center">
 
-컴퓨터 비전 1주차 실습
-
-이번 실습은 Python과 OpenCV 라이브러리를 활용하여 이미지를 다루고,
+# 컴퓨터 비전 1주차 실습
+이번 실습은 Python과 OpenCV 라이브러리를 활용하여 <br>이미지를 다루고,
 마우스와 키보드 이벤트를 통해 이미지 위에 그림을 그리거나
-특정 영역을 잘라내어 저장하는 실습입니다.
+특정 영역을 잘라내어 저장합니다.
 
 </div>
+<br><br>
 
-1. 이미지 컬러/흑백 나란히 출력하기 (1.1.1.py)
+# 1. 이미지 컬러/흑백 나란히 출력하기 (1.1.1.py) 
+<br>
 
-[실습 목표]
-하나의 이미지를 컬러와 흑백 두 가지 버전으로 불러온 뒤, 화면 비율을 유지하면서 크기를 조절하고 두 이미지를 가로로 나란히 이어 붙여 한 화면에 출력하는 실습입니다.
+[실습 목표]<br>
+하나의 이미지를 컬러와 흑백 두 가지 버전으로 불러온 뒤, 화면 비율을 유지하면서 크기를 조절하고 <br>두 이미지를 가로로 나란히 이어 붙여 한 화면에 출력하는 실습입니다.
 
 <details>
-<summary><b>전체 코드 및 주석 보기 (클릭하여 펼치기)</b></summary>
+<summary><b>전체 코드 및 주석 (클릭하여 펼치기)</b></summary>
 <div markdown="1">
 
 ```python
@@ -22,14 +23,14 @@ import cv2 # OpenCV 라이브러리를 불러옵니다. 이미지 및 영상 처
 import numpy as np # 행렬 및 다차원 배열 처리를 위한 numpy 라이브러리를 불러옵니다.
 
 # 1. 이미지 불러오기
-# 'soccer.jpg' 파일을 컬러 이미지(기본값)로 읽어옵니다.
+# 'soccer.jpg' 파일을 컬러 이미지로 읽어옵니다.
 img_color = cv2.imread('soccer.jpg')
-# 'soccer.jpg' 파일을 흑백(그레이스케일) 이미지로 읽어옵니다.
+# 'soccer.jpg' 파일을 흑백 이미지로 읽어옵니다.
 img_gray = cv2.imread('soccer.jpg', cv2.IMREAD_GRAYSCALE)
 
-# 2. 이미지 크기 조절 (비율 유지)
+# 2. 이미지 크기
 width = 500 # 변경할 목표 가로 길이를 500 픽셀로 설정합니다.
-# 원본 이미지의 비율을 유지하기 위해 세로 길이를 비례식으로 계산합니다. (정수형으로 변환)
+# 원본 이미지의 비율을 유지하기 위해 세로 길이를 비례식으로 계산합니다.
 height = int(img_color.shape[0] * (width / img_color.shape[1]))
 
 # 계산된 너비와 높이로 컬러 이미지의 크기를 조절합니다.
@@ -49,7 +50,7 @@ result = np.hstack((img_color_resized, img_gray_3ch))
 # 'Color and Grayscale'이라는 이름의 창을 띄우고 결과 이미지를 보여줍니다.
 cv2.imshow('Color and Grayscale', result)
 
-# 키보드 입력이 있을 때까지 창을 무한정 대기시킵니다. (0은 무한 대기를 의미)
+# 키보드 입력이 있을 때까지 창을 무한정 대기시킵니다. (0은 무한 대기)
 cv2.waitKey(0)
 
 # 사용자의 입력이 들어오면 생성된 모든 OpenCV 창을 닫고 메모리를 해제합니다.
@@ -65,10 +66,11 @@ cv2.destroyAllWindows()```
 <div align="center">
 <img width="1493" height="535" alt="실행 결과 1" src="https://github.com/user-attachments/assets/68c8514b-fc8d-486a-b531-e70310b59743" />
 </div>
+<br><br>
 
-2. 마우스 이벤트로 그림 그리기 (1.1.2.py)
+# 2. 마우스 이벤트로 그림 그리기 (1.1.2.py)
 
-[실습 목표]
+[실습 목표]<br>
 불러온 이미지 위에 마우스 클릭과 드래그를 이용하여 그림을 그리는 미니 그림판 프로그램입니다. 좌클릭은 파란색, 우클릭은 빨간색으로 그려지며, 키보드 +와 - 키를 이용해 붓의 크기를 조절할 수 있습니다.
 
 <details>
@@ -165,19 +167,13 @@ cv.destroyAllWindows()```
 
 <div align="center">
 <img width="2148" height="1354" alt="실행 결과 2-1" src="https://github.com/user-attachments/assets/75ead328-b07a-46a4-840c-09975337aff9" />
-
-
-
-
-
-
-
 <img width="1725" height="914" alt="실행 결과 2-2" src="https://github.com/user-attachments/assets/ad539da6-dbf3-43ff-ad36-d93e3c086700" />
 </div>
+<br><br>
 
-3. 마우스 드래그로 영역(ROI) 선택 및 저장하기 (1.1.3.py)
+# 3. 마우스 드래그로 영역(ROI) 선택 및 저장하기 (1.1.3.py)
 
-[실습 목표]
+[실습 목표]<br>
 이미지 위에서 마우스를 드래그하여 원하는 영역(ROI: Region of Interest)을 사각형으로 선택하고, 해당 부분을 잘라내어 별도의 창에 띄우는 프로그램입니다. 키보드를 조작하여 선택 영역을 초기화하거나 이미지 파일로 저장할 수 있습니다.
 
 <details>
@@ -185,70 +181,70 @@ cv.destroyAllWindows()```
 <div markdown="1">
 
 ```python
-import cv2 as cv # OpenCV 라이브러리를 'cv'라는 별칭으로 불러옵니다.
+import cv2 as cv # OpenCV 라이브러리입니다.
 
 # 1. 이미지를 불러오고 화면에 출력하기 위한 준비
-img = cv.imread('soccer.jpg')
+img = cv.imread('soccer.jpg') # 'soccer.jpg' 파일을 읽어서 변수 img에 저장합니다.
 
-if img is None:
-    print("축구 이미지를 불러올 수 없습니다. 파일명과 경로를 확인해 주세요.")
-    exit()
+if img is None: # 이미지가 파일 경로에 없거나 불러오기에 실패했을 경우를 체크합니다.
+    print("축구 이미지를 불러올 수 없습니다. 파일명과 경로를 확인해 주세요.") # 에러 메시지를 출력합니다.
+    exit() # 프로그램의 실행을 강제로 종료합니다.
 
-clone = img.copy() # 원본 이미지 복사본 생성
-roi = None
-drawing = False
-start_pt = (-1, -1)
+clone = img.copy() # 원본 이미지 위에 사각형을 그리면 원본이 손상되므로, 화면 출력용 복사본을 만듭니다.
+roi = None # 나중에 잘라낸 이미지 영역을 담을 변수를 미리 비워둔 상태로 선언합니다.
+drawing = False # 마우스 드래그 중인지(버튼이 눌려있는지) 확인하기 위한 상태 변수입니다.
+start_pt = (-1, -1) # 드래그를 시작한 좌표(x, y)를 저장할 변수로, 처음에는 유효하지 않은 값으로 설정합니다.
 
 # 2. 마우스 이벤트를 처리하는 콜백 함수 정의
-def select_roi(event, x, y, flags, param):
-    global start_pt, drawing, clone, img, roi
+def select_roi(event, x, y, flags, param): # 마우스 조작 시 호출되는 함수로, 이벤트 종류와 좌표 정보를 받습니다.
+    global start_pt, drawing, clone, img, roi # 함수 외부에서 선언된 전역 변수들을 함수 내에서 수정하기 위해 선언합니다.
 
-    if event == cv.EVENT_LBUTTONDOWN:
-        drawing = True
-        start_pt = (x, y)
+    if event == cv.EVENT_LBUTTONDOWN: # 마우스 왼쪽 버튼을 처음 누르는 순간 실행됩니다.
+        drawing = True # 이제 드래그가 시작되었음을 알리는 상태로 바꿉니다.
+        start_pt = (x, y) # 현재 마우스가 위치한 곳의 x, y 좌표를 시작점으로 기록합니다.
 
-    elif event == cv.EVENT_MOUSEMOVE:
-        if drawing:
-            clone = img.copy() 
-            cv.rectangle(clone, start_pt, (x, y), (0, 255, 0), 2)
+    elif event == cv.EVENT_MOUSEMOVE: # 마우스가 화면 위에서 움직일 때마다 실행됩니다.
+        if drawing: # 만약 왼쪽 버튼을 누른 채로 움직이고 있다면(드래그 중이라면)
+            clone = img.copy() # 이전 사각형 잔상을 지우기 위해 원본 이미지로부터 다시 깨끗한 복사본을 가져옵니다.
+            cv.rectangle(clone, start_pt, (x, y), (0, 255, 0), 2) # 시작점부터 현재 좌표까지 초록색(0, 255, 0) 사각형을 그립니다.
 
-    elif event == cv.EVENT_LBUTTONUP:
-        drawing = False
-        clone = img.copy()
-        cv.rectangle(clone, start_pt, (x, y), (0, 255, 0), 2)
+    elif event == cv.EVENT_LBUTTONUP: # 마우스 왼쪽 버튼에서 손을 떼는 순간 실행됩니다.
+        drawing = False # 드래그가 끝났으므로 상태 변수를 거짓으로 바꿉니다.
+        clone = img.copy() # 화면에 최종 선택된 사각형을 고정시키기 위해 원본을 다시 복사합니다.
+        cv.rectangle(clone, start_pt, (x, y), (0, 255, 0), 2) # 최종적으로 결정된 영역에 사각형을 한 번 더 그려줍니다.
 
-        x1, y1 = min(start_pt[0], x), min(start_pt[1], y)
-        x2, y2 = max(start_pt[0], x), max(start_pt[1], y)
+        x1, y1 = min(start_pt[0], x), min(start_pt[1], y) # 마우스를 어느 방향으로 끌어도 자르기가 가능하도록 최소 x, y 좌표를 구합니다.
+        x2, y2 = max(start_pt[0], x), max(start_pt[1], y) # 마우스를 어느 방향으로 끌어도 자르기가 가능하도록 최대 x, y 좌표를 구합니다.
 
-        if x2 > x1 and y2 > y1:
-            roi = img[y1:y2, x1:x2]
-            cv.imshow("ROI", roi)
+        if x2 > x1 and y2 > y1: # 드래그한 영역의 넓이가 존재할 경우에만 자르기를 수행합니다.
+            roi = img[y1:y2, x1:x2] # 넘파이 슬라이싱을 사용하여 원본 이미지에서 해당 좌표만큼의 행렬 데이터를 추출합니다.
+            cv.imshow("ROI", roi) # 잘라낸 이미지(ROI)를 'ROI'라는 이름의 새로운 창에 띄워 보여줍니다.
 
-cv.namedWindow('Image')
-cv.setMouseCallback('Image', select_roi)
+cv.namedWindow('Image') # 'Image'라는 이름의 윈도우 창을 미리 생성합니다.
+cv.setMouseCallback('Image', select_roi) # 'Image' 창에서 발생하는 모든 마우스 동작을 select_roi 함수로 전달하도록 설정합니다.
 
-while True:
-    cv.imshow('Image', clone)
-    key = cv.waitKey(1) & 0xFF
+while True: # 사용자가 종료할 때까지 화면을 계속 갱신하며 보여주는 무한 루프입니다.
+    cv.imshow('Image', clone) # 사각형 드래그 현황이 반영된 clone 이미지를 창에 지속적으로 출력합니다.
+    key = cv.waitKey(1) & 0xFF # 1밀리초 동안 키보드 입력을 기다리고, 입력받은 키 값을 가져옵니다.
 
-    if key == ord('r'):
-        clone = img.copy()
-        if cv.getWindowProperty("ROI", cv.WND_PROP_VISIBLE) >= 1:
-            cv.destroyWindow("ROI")
-        roi = None
-        print("영역 선택이 초기화되었습니다. 다시 드래그해 주세요.")
+    if key == ord('r'): # 키보드 'r' 키를 눌렀을 경우 (Reset)
+        clone = img.copy() # 화면에 그려진 사각형을 지우기 위해 이미지를 초기 원본으로 되돌립니다.
+        if cv.getWindowProperty("ROI", cv.WND_PROP_VISIBLE) >= 1: # 'ROI' 창이 현재 열려있는지 확인합니다.
+            cv.destroyWindow("ROI") # 열려있다면 해당 창을 닫아 화면을 깨끗하게 만듭니다.
+        roi = None # 저장되어 있던 잘라낸 이미지 데이터를 삭제합니다.
+        print("영역 선택이 초기화되었습니다. 다시 드래그해 주세요.") # 콘솔에 상태를 알립니다.
 
-    elif key == ord('s'):
-        if roi is not None:
-            cv.imwrite('saved_roi.jpg', roi)
-            print("선택한 영역이 'saved_roi.jpg'로 성공적으로 저장되었습니다.")
-        else:
-            print("저장할 영역이 아직 선택되지 않았습니다.")
+    elif key == ord('s'): # 키보드 's' 키를 눌렀을 경우 (Save)
+        if roi is not None: # 잘라낸 영역(ROI) 데이터가 메모리에 존재할 때만 실행합니다.
+            cv.imwrite('saved_roi.jpg', roi) # 잘린 이미지를 'saved_roi.jpg'라는 이름의 파일로 현재 폴더에 저장합니다.
+            print("선택한 영역이 'saved_roi.jpg'로 성공적으로 저장되었습니다.") # 저장 성공 메시지를 출력합니다.
+        else: # 저장할 데이터가 없을 경우
+            print("저장할 영역이 아직 선택되지 않았습니다.") # 경고 메시지를 출력합니다.
 
-    elif key == ord('q'):
-        break
+    elif key == ord('q'): # 키보드 'q' 키를 눌렀을 경우 (Quit)
+        break # 무한 루프를 탈출하여 프로그램 종료 단계로 넘어갑니다.
 
-cv.destroyAllWindows()```
+cv.destroyAllWindows() # 프로그램 종료 전, 열려있던 모든 OpenCV 창을 닫고 메모리를 해제합니다.```
 ```
 
 
@@ -258,5 +254,5 @@ cv.destroyAllWindows()```
 실행 결과 화면
 
 <div align="center">
-<img width="2147" height="1241" alt="실행 결과 3" src="https://github.com/user-attachments/assets/e5e29e60-d59a-425d-bc90-b16243d9a918" />
+<img width="2149" height="1240" alt="image" src="https://github.com/user-attachments/assets/e5c225fe-c24c-4e26-a9de-5897d9d1de5d" />
 </div>
