@@ -185,7 +185,7 @@ cv2.destroyAllWindows() # 키보드 입력이 감지되면 생성된 모든 Open
 
 [실행 결과 화면]
 <div align="center">
-<img width="2343" height="1231" alt="image" src="https://github.com/user-attachments/assets/c2735b86-f088-43fc-b0c7-ec5d1e8d5391" />
+<img width="1178" height="427" alt="image" src="https://github.com/user-attachments/assets/5604392a-f5b1-464f-9f05-c4499ce0cd94" />
 </div>
 <br><br>
 
