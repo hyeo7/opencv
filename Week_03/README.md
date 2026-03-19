@@ -17,7 +17,8 @@ cv2.imread()를 사용하여 이미지를 불러오고 cv2.cvtColor()를 통해 
 cv2.Sobel() 함수를 사용하여 x축과 y축 방향의 에지를 검출하고, cv2.magnitude()를 사용해 최종적인 에지 강도를 계산했습니다. <br>
 계산된 에지 강도 이미지를 cv2.convertScaleAbs()로 변환한 뒤, Matplotlib를 사용하여 원본 이미지와 에지 강도 이미지를 흑백으로 나란히 시각화했습니다. <br>
 
-<details>
+<details><img width="2241" height="698" alt="image" src="https://github.com/user-attachments/assets/18188d26-6d35-4ca7-a5db-9a9046e84c3f" />
+
 <summary><b>전체 코드 및 주석 (클릭하여 펼치기)</b></summary>
 <div markdown="1">
 
@@ -194,7 +195,7 @@ else:
 사용자가 지정한 사각형 영역을 초기 단서로 제공하여 GrabCut 알고리즘을 수행하고, 복잡한 이미지에서 전경(객체)과 배경을 분리해 내는 실습입니다.
 <br><br>
 [과제 설명] <br>
-cv2.grabCut() 함수를 사용하여 사용자가 설정한 사각형 영역(rect)을 기반으로 대화식 분할을 수행했습니다. <br>
+cv2.grabCut() 함수를 사용하여 사용자가 설정한 사각형 영역을 기반으로 대화식 분할을 수행했습니다. <br>
 생성된 마스크 배열에서 배경과 관련된 값을 0으로, 전경과 관련된 값을 1로 수정한 뒤, np.where()를 이용해 이진화된 마스크 이미지를 만들고 이를 원본 이미지에 곱해 배경을 완벽히 제거했습니다. <br>
 Matplotlib를 활용하여 원본 이미지, 생성된 이진 마스크 이미지, 그리고 객체만 추출된 최종 결과 이미지를 나란히 시각화했습니다. <br>
 
