@@ -11,7 +11,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 # ==========================================
 # 1. 데이터 로드
 # ==========================================
-# [데이터 형태 시각화]
+# [데이터 형태]
 # x_train : [60000장]의 [28행 x 28열] 2차원 이미지 더미 (Shape: 60000, 28, 28)
 # y_train : [60000개]의 정답 숫자 (예: 5, 0, 4, 1...) (Shape: 60000,)
 (x_train, y_train), (x_test, y_test) = ds.mnist.load_data()
@@ -19,7 +19,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 # ==========================================
 # 2. 데이터 전처리
 # ==========================================
-# [Flatten (평탄화) 및 정규화 시각화]
+# [Flatten (평탄화) 및 정규화]
 # 2D 이미지 (28x28)       =>  1D 배열 (784)            =>  정규화 (0.0 ~ 1.0)
 # [  0,   0,   0]             [0, 0, 0, 255, 128...]   =>  [0.0, 0.0, 0.0, 1.0, 0.5...]
 # [255, 128,   0]  ====>  
@@ -27,7 +27,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 x_train = x_train.reshape(60000, 784).astype(np.float32) / 255.0
 x_test = x_test.reshape(10000, 784).astype(np.float32) / 255.0
 
-# [One-Hot Encoding 시각화]
+# [One-Hot Encoding]
 # 정답 라벨이 숫자 '3'인 경우 => 인덱스 3만 1이고 나머지는 0인 배열로 변환
 # 3  ====>  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0] (Shape: 60000, 10)
 y_train = tf.keras.utils.to_categorical(y_train, 10)
@@ -36,7 +36,7 @@ y_test = tf.keras.utils.to_categorical(y_test, 10)
 # ==========================================
 # 3. 모델 구성
 # ==========================================
-# [신경망 데이터 흐름 시각화]
+# [신경망 데이터 흐름]
 # Input Layer        Hidden Layer             Dropout               Output Layer
 # (784개 픽셀)        (128개 노드, ReLU)      (20% 임의 차단)        (10개 클래스, Softmax)
 # 
@@ -59,7 +59,7 @@ early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weig
 # ==========================================
 # 5. 모델 학습
 # ==========================================
-# [조기 종료 작동 시각화]
+# [Early Stopping 작동]
 # Epoch 10: loss 0.05, val_loss 0.080 (최저점 갱신)
 # Epoch 11: loss 0.04, val_loss 0.082 (악화 1/3)
 # Epoch 12: loss 0.03, val_loss 0.085 (악화 2/3)
