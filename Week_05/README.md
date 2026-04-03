@@ -143,7 +143,7 @@ plt.show()```
 
 [실행 결과 화면]
 <div align="center">
-<img width="1793" height="600" alt="image" src="https://github.com/user-attachments/assets/84c0a885-4d2b-4896-9d2d-40432b28fa19" />
+<img width="1794" height="588" alt="image" src="https://github.com/user-attachments/assets/96182099-aac1-46ae-af80-ff0eaf42b37f" />
 <img width="487" height="29" alt="image" src="https://github.com/user-attachments/assets/89241cfb-5646-474d-a685-ff6c8af16027" />
 </div>
 <br><br>
