@@ -1,122 +1,130 @@
+import os
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt # [추가] 시각화를 위한 라이브러리 임포트
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Activation
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
-import os
 
-# [1] 데이터 로드 및 수치 정규화
-# CIFAR-10 데이터를 불러오고 픽셀 값을 [0, 1] 범위로 스케일링하여 신경망의 연산 효율을 높임
+# =============================================================================
+# [요구사항 1] CIFAR-10 데이터셋 로드
+# =============================================================================
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-x_train = x_train.astype('float32') / 255.0
-x_test = x_test.astype('float32') / 255.0
 
-# 레이블을 원-핫 인코딩(One-Hot Encoding)으로 변환하여 다중 클래스 분류 준비
-y_train = tf.keras.utils.to_categorical(y_train, 10)
-y_test = tf.keras.utils.to_categorical(y_test, 10)
+# =============================================================================
+# [요구사항 2] 데이터 전처리 (정규화 등) 수행
+# =============================================================================
+x_train = x_train.astype(np.float32) / 255.0
+x_test = x_test.astype(np.float32) / 255.0
 
-# [2] 데이터 증강 전략 수립
-# 모델의 일반화 성능을 높이기 위해 이미지를 무작위로 변형하는 생성기 설정
-datagen = ImageDataGenerator(
-    rotation_range=15,       # 최대 15도 회전
-    width_shift_range=0.1,   # 가로 10% 이동
-    height_shift_range=0.1,  # 세로 10% 이동
-    horizontal_flip=True,    # 좌우 반전 적용
+# 레이블 평탄화 (N, 1) -> (N,)
+y_train = y_train.flatten()
+y_test = y_test.flatten()
+
+# =============================================================================
+# [요구사항 3-1] CNN 모델 설계
+# =============================================================================
+model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(32, 32, 3)),
+    MaxPooling2D((2, 2)),
+
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+
+    Conv2D(128, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D((2, 2)),
+
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dropout(0.5), # 완전 연결 층 파라미터 폭발 구간의 50%를 무작위 비활성화
+    Dense(10, activation='softmax')
+])
+
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
 )
-datagen.fit(x_train)
 
-# [3] 고성능 CNN 아키텍처 설계
-model = Sequential()
-
-# Block 1: 저수준 특징(선, 곡선) 추출 및 정규화
-model.add(Conv2D(32, (3,3), padding='same', kernel_initializer='he_uniform', input_shape=(32,32,3)))
-model.add(BatchNormalization()) # 배치 정규화로 학습 안정성 확보
-model.add(Activation('relu'))
-model.add(Conv2D(32, (3,3), padding='same', kernel_initializer='he_uniform'))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.2)) # 과대적합 방지를 위한 20% 뉴런 비활성화
-
-# Block 2: 중간 수준 특징(무늬, 질감) 추출
-model.add(Conv2D(64, (3,3), padding='same', kernel_initializer='he_uniform'))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv2D(64, (3,3), padding='same', kernel_initializer='he_uniform'))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.3))
-
-# Block 3: 고수준 특징(형태) 추출
-model.add(Conv2D(128, (3,3), padding='same', kernel_initializer='he_uniform'))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.4))
-
-# Classifier: 추출된 특징을 바탕으로 최종 분류
-model.add(Flatten()) # 3차원 특징 맵을 1차원 벡터로 변환
-model.add(Dense(128, kernel_initializer='he_uniform'))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Dropout(0.5)) # 파라미터가 많은 밀집층에 강력한 드롭아웃 적용
-model.add(Dense(10, activation='softmax')) # 10개 클래스에 대한 확률 출력
-
-# [4] 최적화 알고리즘 및 콜백 설정
-opt = tf.keras.optimizers.Adam(learning_rate=0.0005) # 정교한 학습을 위해 학습률 조정
-model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
-
-# 검증 손실이 개선되지 않으면 자동으로 중단하고 최적 가중치를 복구하는 콜백
+# =============================================================================
+# [요구사항 3-2] 모델 훈련 및 검증
+# =============================================================================
 early_stopping = EarlyStopping(
-    monitor='val_loss', 
-    patience=12, 
+    monitor='val_loss',
+    patience=5, 
     restore_best_weights=True 
 )
 
-# [5] 데이터 증강 흐름을 통한 학습 실행
-print("\n--- Training Pipeline Started ---")
-model.fit(
-    datagen.flow(x_train, y_train, batch_size=64),
-    epochs=100, 
-    validation_data=(x_test, y_test),
+print("\n--- CNN 모델 학습 시작 ---")
+# [수정] 학습 과정을 시각화하기 위해 반환값을 history 변수에 저장합니다.
+history = model.fit(
+    x_train, y_train,
+    batch_size=128,
+    epochs=50, 
+    validation_split=0.1, 
     callbacks=[early_stopping],
     verbose=2
 )
 
-# [6] 최종 일반화 성능 평가
+# =============================================================================
+# [요구사항 4-1] 모델의 성능 평가
+# =============================================================================
+print("\n--- 테스트 세트 최종 평가 ---")
 loss, accuracy = model.evaluate(x_test, y_test, verbose=0)
-print(f"\n Final Test Accuracy: {accuracy * 100:.2f}%")
+print(f"✅ 최종 테스트 정확도: {accuracy * 100:.2f}%")
 
-# [7] 외부 테스트 이미지(dog.jpg) 추론 및 검증
-class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+# =============================================================================
+# [부가 로직] 학습 곡선(Learning Curve) 시각화
+# 과대적합 발생 시점 및 조기 종료 작동 여부를 시각적으로 검증합니다.
+# =============================================================================
+print("\n--- 학습 과정 시각화 그래프 출력 ---")
+plt.figure(figsize=(12, 4))
+
+# 1. 정확도(Accuracy) 그래프
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Train Accuracy', color='blue')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy', color='orange')
+plt.title('Model Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.6)
+
+# 2. 손실(Loss) 그래프
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Train Loss', color='blue')
+plt.plot(history.history['val_loss'], label='Validation Loss', color='orange')
+plt.title('Model Loss (Early Stopping Monitor)')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.6)
+
+plt.tight_layout()
+plt.show()
+
+# =============================================================================
+# [요구사항 4-2] 테스트 이미지 (dog.jpg)에 대한 예측 수행
+# =============================================================================
+print("\n--- 외부 이미지 (dog.jpg) 예측 테스트 ---")
+class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer',
+               'dog', 'frog', 'horse', 'ship', 'truck']
 img_path = 'dog.jpg'
 
 if os.path.exists(img_path):
-    # 이미지 로드 및 배열 변환
     img_raw = tf.keras.preprocessing.image.load_img(img_path)
     img_arr = tf.keras.preprocessing.image.img_to_array(img_raw)
     
-    # Lanczos 알고리즘을 사용해 고품질 리사이즈 후 정규화
-    img_input = tf.image.resize(img_arr, (32, 32), method='lanczos3')
-    img_input = np.expand_dims(img_input.numpy(), axis=0) / 255.0
+    # 입력 비율을 유지하며 32x32로 맞추고 여백은 0으로 채움
+    img_padded = tf.image.resize_with_pad(img_arr, 32, 32).numpy()
+    img_input = np.expand_dims(img_padded, axis=0) / 255.0
     
-    # 모델 예측 수행
     pred = model.predict(img_input, verbose=0)
-    conf = np.max(pred[0]) * 100
-    p_class = class_names[np.argmax(pred[0])]
+    pred_index = np.argmax(pred[0])
+    pred_class = class_names[pred_index]
+    confidence = pred[0][pred_index] * 100
     
-    print("\n" + "="*40)
-    print(f"Prediction for '{img_path}': {p_class}")
-    print(f"Confidence Score: {conf:.2f}%")
-    print("="*40)
-    
-    # 목표 성능(80%) 달성 여부 확인
-    if p_class == 'dog' and conf >= 80:
-        print("Result: Objective Cleared (Over 80%)")
-    else:
-        print(f"Result: Misclassified as {p_class}")
+    print(f"👉 예측 결과: {pred_class} (신뢰도: {confidence:.2f}%)")
 else:
-    print(f"Error: '{img_path}' not found.")
+    print(f"⚠️ 에러: '{img_path}' 파일이 동일한 폴더에 존재하지 않습니다.")
