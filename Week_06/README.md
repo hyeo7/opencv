@@ -28,7 +28,6 @@ import numpy as np
 import os
 import sys
 
-# [준비사항] filterpy, scikit-image 설치 및 sort.py 파일이 동일 경로에 있어야 함
 try:
     from sort import Sort
 except ImportError:
@@ -172,7 +171,6 @@ OpenCV를 사용하여 웹캠으로부터 실시간 영상을 캡처한 뒤, <br
 import cv2
 import sys
 
-# [수정] mp.solutions 대신 내부 모듈을 직접 가져와서 호환성 문제를 박멸합니다.
 try:
     import mediapipe.python.solutions.face_mesh as mp_face_mesh
 except ImportError as e:
