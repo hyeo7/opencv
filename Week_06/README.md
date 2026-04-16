@@ -227,5 +227,6 @@ face_mesh.close()```
 
 [실행 결과 화면]
 <div align="center">
+<img width="933" height="691" alt="image" src="https://github.com/user-attachments/assets/d412e9e9-298b-42a9-a6af-2329f46cf7db" />
 </div>
 <br><br>
