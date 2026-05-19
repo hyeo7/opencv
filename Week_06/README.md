@@ -150,6 +150,7 @@ if __name__ == "__main__":
 
 [실행 결과 화면]
 <div align="center">
+<img width="476" height="284" alt="image" src="https://github.com/user-attachments/assets/7b92e6e2-7e01-40de-8cbb-9df68a1d4150" />
 </div>
 <br><br>
 
